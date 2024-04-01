@@ -216,6 +216,13 @@ vim.keymap.set('n', '<leader>eb', ':sp ~/.bashrc<CR>', options_noremap)
 vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', options_noremap)
 vim.keymap.set('i', 'jk', '<Esc>', options_noremap)
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Explore
+-- Tabs:
+vim.keymap.set('n', '<leader>tr', ':tabr<CR>', options_noremap)
+vim.keymap.set('n', '<leader>tl', ':tabl<CR>', options_noremap)
+vim.keymap.set('n', '<C-h>', ':tabp<CR>', { desc = 'Move to left tab' })
+vim.keymap.set('n', '<C-l>', ':tabn<CR>', { desc = 'Move to right tab' })
+vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/', options_noremap)
+vim.keymap.set('n', '<leader>tm', ':tabmove ', options_noremap)
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -385,6 +392,11 @@ require('lazy').setup({
             require('telescope.themes').get_dropdown(),
           },
         },
+        pickers = {
+          colorscheme = {
+            enable_preview = true
+          }
+        }
       }
 
       -- Enable Telescope extensions if they are installed
@@ -545,6 +557,22 @@ require('lazy').setup({
               callback = vim.lsp.buf.clear_references,
             })
           end
+
+          vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics, {
+              -- disable virtual text
+              virtual_text = false,
+
+              -- show signs (E or W on left side)
+              signs = true,
+              -- don't underline
+              underline = false,
+
+              -- delay update diagnostics
+              update_in_insert = false,
+            }
+          )
+
         end,
       })
 
@@ -565,9 +593,21 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         -- pyright = {},
+        --
+        -- pylsp = {
+        --   pylsp = {
+        --       plugins = {
+        --         pycodestyle = {  -- this doesn't work, need ~/.config/pycodestyle :(
+        --           ignore = {'W391'},
+        --           maxLineLength = 100
+        --         }
+        --       }
+        --   }
+        -- },
+        --
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -625,31 +665,31 @@ require('lazy').setup({
     end,
   },
 
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
-      },
-    },
-  },
+  -- { -- Autoformat
+  --   'stevearc/conform.nvim',
+  --   opts = {
+  --     notify_on_error = false,
+  --     format_on_save = function(bufnr)
+  --       -- Disable "format_on_save lsp_fallback" for languages that don't
+  --       -- have a well standardized coding style. You can add additional
+  --       -- languages here or re-enable it for the disabled ones.
+  --       local disable_filetypes = { c = true, cpp = true }
+  --       return {
+  --         timeout_ms = 500,
+  --         lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+  --       }
+  --     end,
+  --     formatters_by_ft = {
+  --       lua = { 'stylua' },
+  --       -- Conform can also run multiple formatters sequentially
+  --       -- python = { "isort", "black" },
+  --       --
+  --       -- You can use a sub-list to tell conform to run *until* a formatter
+  --       -- is found.
+  --       -- javascript = { { "prettierd", "prettier" } },
+  --     },
+  --   },
+  -- },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
