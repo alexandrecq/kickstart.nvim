@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -153,6 +153,20 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+--- Custom options:
+-- set completion mode
+vim.opt.wildmode = { 'longest:longest', 'list', 'full' }
+-- visual bell instead of beeping
+-- vim.opt.visualbell = true
+-- show latest command
+vim.showcmd = true
+-- backup: (or use undotree)
+vim.opt.backup = true
+vim.opt.writebackup = true
+local config_home = vim.env.XDG_CONFIG_HOME or vim.fn.expand '~/.config'
+vim.opt.undodir = { config_home .. '/nvim/.undo//' }
+vim.opt.backupdir = { config_home .. '/nvim/.backup//' }
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
