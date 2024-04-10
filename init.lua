@@ -210,19 +210,23 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Custom keymaps:
 local options_noremap = { noremap = true }
 -- vim.cmd('source path/to/file.vim')
-vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Exit NVim' })
-vim.keymap.set('n', '<leader>w', ':write<CR>')
-vim.keymap.set('n', '<leader>eb', ':sp ~/.bashrc<CR>', options_noremap)
-vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', options_noremap)
+vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = '[Q]uit NVim' })
+vim.keymap.set('n', '<leader>w', ':write<CR>', { desc = '[W]rite current buffer' })
+vim.keymap.set('n', '<leader>eb', ':sp ~/.bashrc<CR>', { desc = '[E]dit [B]ash' })
+vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', { desc = '[M]ake [S]ession' })
 vim.keymap.set('i', 'jk', '<Esc>', options_noremap)
--- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Explore
+vim.keymap.set('n', '0', '^', options_noremap)
+-- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Explore directory, is this useful?
 -- Tabs:
-vim.keymap.set('n', '<leader>tr', ':tabr<CR>', options_noremap)
-vim.keymap.set('n', '<leader>tl', ':tabl<CR>', options_noremap)
+vim.keymap.set('n', '<leader>tr', ':tabr<CR>', { desc = '[T]ab fi[R]st' })
+vim.keymap.set('n', '<leader>tl', ':tabl<CR>', { desc = '[T]ab [L]ast' })
 vim.keymap.set('n', '<C-h>', ':tabp<CR>', { desc = 'Move to left tab' })
 vim.keymap.set('n', '<C-l>', ':tabn<CR>', { desc = 'Move to right tab' })
-vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/', options_noremap)
-vim.keymap.set('n', '<leader>tm', ':tabmove ', options_noremap)
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
+vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/',
+  { desc = '[T]ab [E]dit' })
+vim.keymap.set('n', '<leader>tm', ':tabmove ', { desc = '[T]ab [M]ove' })
+vim.keymap.set('n', '<leader>tt', ':tabnext ', { desc = '[T]o [T]ab number' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -386,16 +390,15 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
         pickers = {
           colorscheme = {
             enable_preview = true
           }
+        },
+        extensions = {
+          ['ui-select'] = {
+            require('telescope.themes').get_dropdown(),
+          },
         }
       }
 
@@ -808,6 +811,7 @@ require('lazy').setup({
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'evening'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -840,7 +844,9 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      statusline.setup {
+        use_icons = vim.g.have_nerd_font
+      }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -850,10 +856,28 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
+      -- no support for custom buffer order
+      -- local tabline = require 'mini.tabline'
+      -- tabline.setup {
+      --   -- Whether to show file icons (requires 'nvim-tree/nvim-web-devicons')
+      --   show_icons = true,
+      --
+      --   -- Whether to set Vim's settings for tabline (make it always shown and
+      --   -- allow hidden buffers)
+      --   -- set_vim_settings = true,
+      --
+      --   -- Where to show tabpage section in case of multiple vim tabpages.
+      --   -- One of 'left', 'right', 'none'.
+      --   tabpage_section = 'left',
+      -- }
+    end, -- end mini config
   },
+  -- {
+  --   'akinsho/bufferline.nvim',
+  --   require("bufferline").setup{},
+  --   -- { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+  --   -- vim.opt.termguicolors = true,
+  -- },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
