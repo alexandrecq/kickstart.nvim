@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = true
+vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -154,23 +154,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
---- Custom options:
--- set completion mode
-vim.opt.wildmode = { 'longest:longest', 'list', 'full' }
--- visual bell instead of beeping
--- vim.opt.visualbell = true
--- show latest command
-vim.showcmd = true
--- backup: (or use undotree)
-vim.opt.backup = true
-vim.opt.writebackup = true
-local config_home = vim.env.XDG_CONFIG_HOME or vim.fn.expand '~/.config'
-vim.opt.undodir = { config_home .. '/nvim/.undo//' }
-vim.opt.backupdir = { config_home .. '/nvim/.backup//' }
-
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -206,29 +189,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- Custom keymaps:
-local options_noremap = { noremap = true }
--- vim.cmd('source path/to/file.vim')
-vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = '[Q]uit NVim' })
-vim.keymap.set('n', '<leader>qa', ':qa<CR>', { desc = '[Q]uit [A]ll' })
-vim.keymap.set('n', '<leader>w', ':write<CR>', { desc = '[W]rite current buffer' })
-vim.keymap.set('n', '<leader>eb', ':sp ~/.bashrc<CR>', { desc = '[E]dit [B]ash' })
-vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', { desc = '[M]ake [S]ession' })
-vim.keymap.set('i', 'jk', '<Esc>', options_noremap)
-vim.keymap.set('n', '0', '^', options_noremap)
--- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Explore directory, is this useful?
--- Tabs:
-vim.keymap.set('n', '<leader>tr', ':tabr<CR>', { desc = '[T]ab fi[R]st' })
-vim.keymap.set('n', '<leader>tl', ':tabl<CR>', { desc = '[T]ab [L]ast' })
-vim.keymap.set('n', '<C-h>', ':tabp<CR>', { desc = 'Move to left tab' })
-vim.keymap.set('n', '<C-l>', ':tabn<CR>', { desc = 'Move to right tab' })
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
-vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/',
-  { desc = '[T]ab [E]dit' })
-vim.keymap.set('n', '<leader>tm', ':tabmove ', { desc = '[T]ab [M]ove' })
-vim.keymap.set('n', '<leader>tt', ':tabnext ', { desc = '[T]o [T]ab number' })
-vim.keymap.set('n', '<leader>nt', '<Cmd>Neotree toggle<CR>', { desc = '[N]eo [T]ree' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -846,9 +806,7 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup {
-        use_icons = vim.g.have_nerd_font
-      }
+      statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -858,28 +816,8 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
-      -- no support for custom buffer order
-      -- local tabline = require 'mini.tabline'
-      -- tabline.setup {
-      --   -- Whether to show file icons (requires 'nvim-tree/nvim-web-devicons')
-      --   show_icons = true,
-      --
-      --   -- Whether to set Vim's settings for tabline (make it always shown and
-      --   -- allow hidden buffers)
-      --   -- set_vim_settings = true,
-      --
-      --   -- Where to show tabpage section in case of multiple vim tabpages.
-      --   -- One of 'left', 'right', 'none'.
-      --   tabpage_section = 'left',
-      -- }
     end, -- end mini config
   },
-  -- {
-  --   'akinsho/bufferline.nvim',
-  --   require("bufferline").setup{},
-  --   -- { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-  --   -- vim.opt.termguicolors = true,
-  -- },
   { -- Highlight, edit, and navigate code
    'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -910,16 +848,6 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-    },
-  },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -940,6 +868,7 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
+  require 'custom.plugins.neotree'
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -961,6 +890,9 @@ require('lazy').setup({
     },
   },
 })
+
+-- Custom config
+require 'custom'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
