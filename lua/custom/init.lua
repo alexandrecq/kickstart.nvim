@@ -1,2 +1,2 @@
-require 'options'
-require 'remap'
+require 'custom.options'
+require 'custom.remap'

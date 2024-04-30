@@ -347,11 +347,24 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        layout_config = {
+          width = function(_, cols, _)
+            if cols > 200 then
+              return 170
+            else
+              return math.floor(cols * 0.87)
+            end
+          end,
+          preview_cutoff = 120,
+        },
+        defaults = {
+          -- layout_config = {
+          --   horizontal = { width = .9 }
+          -- },
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+        },
         pickers = {
           colorscheme = {
             enable_preview = true
@@ -382,13 +395,14 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
-        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, { desc = '[/] Fuzzily search in current buffer' })
+      -- vim.keymap.set('n', '<leader>/', function()
+      --   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+      --   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      --     winblend = 10,
+      --     previewer = true,
+      --   })
+      -- end, { desc = '[/] Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -538,6 +552,10 @@ require('lazy').setup({
             }
           )
 
+          if client and client.name == "clangd" then
+            -- disable semantic highlighting
+            client.server_capabilities.semanticTokensProvider = nil
+          end
         end,
       })
 
@@ -868,7 +886,10 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
-  require 'custom.plugins.neotree'
+  require 'custom.plugins.neotree',
+  -- require 'custom.plugins.colors'
+  require 'custom.plugins.undotree',
+  require 'custom.plugins.fugitive',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
