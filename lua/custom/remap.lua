@@ -7,7 +7,7 @@ vim.keymap.set('n', '<leader>qa', ':qa<CR>', { desc = '[Q]uit [A]ll' })
 vim.keymap.set('n', '<leader>w', ':write<CR>', { desc = '[W]rite current buffer' })
 vim.keymap.set('n', '<leader>eb', ':sp ~/.bashrc<CR>', { desc = '[E]dit [B]ash' })
 vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', { desc = '[M]ake [S]ession' })
-vim.keymap.set('i', 'jk', '<Esc>', options_noremap)
+-- vim.keymap.set('i', 'jk', '<Esc>', options_noremap)
 vim.keymap.set('n', '0', '^', options_noremap)
 
 -- Explore directory
