@@ -32,6 +32,11 @@ vim.keymap.set('n', '<leader>y', "\"+y")
 vim.keymap.set('v', '<leader>y', "\"+y")
 vim.keymap.set('n', '<leader>Y', "\"+Y")
 
+-- Window navigation
+vim.keymap.set('n', '<M-h>', '<C-w>h', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<M-l>', '<C-w>l', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<M-j>', '<C-w>j', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<M-k>', '<C-w>k', { desc = 'Move focus to the upper window' })
 
 -- Tabs:
 vim.keymap.set('n', '<leader>tr', ':tabr<CR>', { desc = '[T]ab fi[R]st' })
