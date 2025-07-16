@@ -48,11 +48,6 @@ vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/', { desc 
 vim.keymap.set('n', '<leader>tm', ':tabmove ', { desc = '[T]ab [M]ove' })
 vim.keymap.set('n', '<leader>tt', ':tabnext ', { desc = '[T]o [T]ab number' })
 
-
---Plugins
-vim.keymap.set('n', '<leader>nt', '<Cmd>Neotree toggle<CR>', { desc = '[N]eo [T]ree' })
--- vim.keymap.set("n", "<leader>u", vim.cmd.UndoTreeToggle)
--- vim.keymap.set("n", "<leader>u", '<Cmd>UndoTreeToggle<CR>')
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]files' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
