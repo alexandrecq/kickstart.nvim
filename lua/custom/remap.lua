@@ -11,7 +11,7 @@ vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', { desc = '[M]ake [S
 vim.keymap.set('n', '0', '^', options_noremap)
 
 -- Explore directory
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc= 'Explore files' }) 
+vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Explore files' })
 
 -- move lines with J/K in visual mode
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
@@ -23,14 +23,14 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 -- paste without replacing yanked text (cut into void register)
-vim.keymap.set('x', '<leader>p', "\"_dP")
+vim.keymap.set('x', '<leader>p', '"_dP')
 -- delete into void register
-vim.keymap.set('n', '<leader>d', "\"_d")
-vim.keymap.set('v', '<leader>d', "\"_d")
+vim.keymap.set('n', '<leader>d', '"_d')
+vim.keymap.set('v', '<leader>d', '"_d')
 -- yank into system clipboard
-vim.keymap.set('n', '<leader>y', "\"+y")
-vim.keymap.set('v', '<leader>y', "\"+y")
-vim.keymap.set('n', '<leader>Y', "\"+Y")
+vim.keymap.set('n', '<leader>y', '"+y')
+vim.keymap.set('v', '<leader>y', '"+y')
+vim.keymap.set('n', '<leader>Y', '"+Y')
 
 -- Window navigation
 vim.keymap.set('n', '<M-h>', '<C-w>h', { desc = 'Move focus to the left window' })
@@ -48,12 +48,11 @@ vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/', { desc 
 vim.keymap.set('n', '<leader>tm', ':tabmove ', { desc = '[T]ab [M]ove' })
 vim.keymap.set('n', '<leader>tt', ':tabnext ', { desc = '[T]o [T]ab number' })
 
-local builtin = require('telescope.builtin')
+local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]files' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
 vim.keymap.set('n', '<leader>ps', function()
-  builtin.grep_string({ search = vim.fn.input("Grep > ") })
+  builtin.grep_string { search = vim.fn.input 'Grep > ' }
 end, { desc = '[P]roject [S]earch' })
 
 vim.keymap.set('n', '<leader>gg', vim.cmd.Git)
-
