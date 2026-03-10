@@ -236,33 +236,6 @@ return {
             },
           },
         },
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                -- Code style checking
-                pycodestyle = {
-                  enabled = false,
-                  -- ignore = { 'W391' }, -- Ignore "blank line at end of file" warning
-                  -- maxLineLength = 120, -- Allow longer lines (default is 79)
-                },
-                -- Jedi-based features (Jedi is a static analysis tool for Python)
-                jedi_completion = { enabled = true }, -- Code completion
-                jedi_hover = { enabled = true }, -- Documentation on hover
-                jedi_references = { enabled = true }, -- Find all references
-                jedi_signature_help = { enabled = true }, -- Show function signatures
-                jedi_symbols = { enabled = true, all_scopes = true }, -- Show document symbols
-                -- Error checking and more
-                pyflakes = { enabled = true }, -- Find programming errors
-                mccabe = { enabled = true }, -- Check code complexity
-                preload = { enabled = true }, -- Preload for better performance
-                -- Explicitly disable rope-related features
-                rope_completion = { enabled = false },
-                rope_rename = { enabled = false },
-              },
-            },
-          },
-        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -305,8 +278,6 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'python-lsp-server', -- Ensure python-lsp-server is installed
-        'black',
         'ruff',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -362,15 +333,7 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'ruff_format', 'black', stop_after_first = true },
-      },
-      formatters = {
-        black = {
-          prepend_args = { 'format --line-length', '200' },
-        },
-        ruff_format = {
-          prepend_args = { 'format --line-length', '200' },
-        },
+        python = { 'ruff_format' },
       },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
