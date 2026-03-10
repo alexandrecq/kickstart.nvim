@@ -24,17 +24,6 @@ Kickstart Guide:
 
   TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
 
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
   Next, run AND READ `:help`.
     This will open up a help window with some basic information
     about reading, navigating and searching the builtin help documentation.
@@ -130,6 +119,7 @@ require('lazy').setup({
   -- require 'custom.plugins.colors'
   require 'custom.plugins.undotree',
   require 'custom.plugins.fugitive',
+  require 'custom.plugins.rainbow-delimiters',
   -- require 'custom.plugins.avante',
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`

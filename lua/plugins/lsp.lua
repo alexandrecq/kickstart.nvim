@@ -242,8 +242,9 @@ return {
               plugins = {
                 -- Code style checking
                 pycodestyle = {
-                  ignore = { 'W391' }, -- Ignore "blank line at end of file" warning
-                  maxLineLength = 100, -- Allow longer lines (default is 79)
+                  enabled = false,
+                  -- ignore = { 'W391' }, -- Ignore "blank line at end of file" warning
+                  -- maxLineLength = 120, -- Allow longer lines (default is 79)
                 },
                 -- Jedi-based features (Jedi is a static analysis tool for Python)
                 jedi_completion = { enabled = true }, -- Code completion
@@ -305,6 +306,8 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'python-lsp-server', -- Ensure python-lsp-server is installed
+        'black',
+        'ruff',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -326,6 +329,7 @@ return {
   },
 
   { -- Autoformat
+    -- Note: fallbacks to lsp default when formatters are not installed. See `:ConformInfo` to see which formatter is used for this buffer
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
@@ -345,8 +349,9 @@ return {
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
+        local ft = vim.bo[bufnr].filetype
         local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
+        if disable_filetypes[ft] then
           return nil
         else
           return {
@@ -357,12 +362,21 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        python = { 'ruff_format', 'black', stop_after_first = true },
       },
+      formatters = {
+        black = {
+          prepend_args = { 'format --line-length', '200' },
+        },
+        ruff_format = {
+          prepend_args = { 'format --line-length', '200' },
+        },
+      },
+      -- Conform can also run multiple formatters sequentially
+      -- python = { "isort", "black" },
+      --
+      -- You can use 'stop_after_first' to run the first available formatter from the list
+      -- javascript = { "prettierd", "prettier", stop_after_first = true },
     },
   },
 }

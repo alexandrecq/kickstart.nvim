@@ -30,12 +30,26 @@ vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 99
 -- vim.opt.foldenable = false
 
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
 -- auto read files when they change (e.g. git branch changed)
 vim.o.autoread = true
-vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'CursorHoldI', 'FocusGained' }, {
   command = "if mode() != 'c' | checktime | endif",
-  pattern = { "*" },
+  pattern = { '*' },
+})
+
+-- force spaces globally (no tabs)
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+
+--
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp' },
+  callback = function()
+    vim.opt_local.formatoptions:remove { 'c', 'r', 'o' }
+  end,
 })
