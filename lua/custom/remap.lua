@@ -55,4 +55,11 @@ vim.keymap.set('n', '<leader>ps', function()
   builtin.grep_string { search = vim.fn.input 'Grep > ' }
 end, { desc = '[P]roject [S]earch' })
 
-vim.keymap.set('n', '<leader>gg', vim.cmd.Git)
+-- Git (requires vim-fugitive: lua/custom/plugins/fugitive.lua)
+vim.keymap.set('n', '<leader>gg', vim.cmd.Git, { desc = '[G]it status window (fugitive)' })
+vim.keymap.set('n', '<leader>gc', ':Git commit<CR>', { desc = '[G]it [C]ommit' })
+vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<CR>', { desc = '[G]it [D]iff current file vs index' })
+vim.keymap.set('n', '<leader>gl', ':Git log --oneline<CR>', { desc = '[G]it [L]og (compact)' })
+vim.keymap.set('n', '<leader>gb', ':Git blame<CR>', { desc = '[G]it [B]lame (full file)' })
+vim.keymap.set('n', '<leader>gp', ':Git push<CR>', { desc = '[G]it [P]ush' })
+vim.keymap.set('n', '<leader>gP', ':Git pull<CR>', { desc = '[G]it [P]ull' })

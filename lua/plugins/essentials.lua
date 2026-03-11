@@ -35,6 +35,26 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gs = require 'gitsigns'
+        local map = function(keys, func, desc)
+          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'Git: ' .. desc })
+        end
+
+        -- Navigate between hunks (changed chunks within a file)
+        map(']c', function() gs.nav_hunk 'next' end, 'Next hunk')
+        map('[c', function() gs.nav_hunk 'prev' end, 'Previous hunk')
+
+        -- Hunk-level staging (stage just part of a file, not the whole thing)
+        map('<leader>hs', gs.stage_hunk,   '[H]unk [S]tage')
+        map('<leader>hr', gs.reset_hunk,   '[H]unk [R]eset (discard changes)')
+        map('<leader>hS', gs.stage_buffer, '[H]unk [S]tage entire buffer')
+        map('<leader>hR', gs.reset_buffer, '[H]unk [R]eset entire buffer')
+
+        -- Inspect hunks
+        map('<leader>hp', gs.preview_hunk, '[H]unk [P]review (inline diff)')
+        map('<leader>hb', gs.blame_line,   '[H]unk [B]lame current line (popup)')
+      end,
     },
   },
 
