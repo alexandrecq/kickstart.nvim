@@ -236,6 +236,19 @@ return {
             },
           },
         },
+        ruff = {
+          -- Ruff acts as both a linter (LSP diagnostics) and formatter (via conform).
+          -- These settings control the LSP/linting side.
+          init_options = {
+            settings = {
+              lineLength = 120, -- Max line length (mirrors formatter setting below)
+              lint = {
+                extendSelect = { 'E501' }, -- E501: Line too long
+                ignore = { 'W391' },       -- W391: Blank line at end of file
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -316,24 +329,15 @@ return {
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local ft = vim.bo[bufnr].filetype
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[ft] then
-          return nil
-        else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
-        end
-      end,
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'ruff_format' },
+      },
+      formatters = {
+        ruff_format = {
+          -- Must mirror lineLength in the ruff LSP settings above
+          prepend_args = { '--line-length', '120' },
+        },
       },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
