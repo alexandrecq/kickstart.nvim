@@ -30,6 +30,18 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
+      local function python_supports_mason_pypi()
+        if vim.fn.executable 'python3' ~= 1 then
+          return false
+        end
+
+        vim.fn.system { 'python3', '-c', 'import ensurepip, venv' }
+        return vim.v.shell_error == 0
+      end
+
+      local has_ruff = vim.fn.executable 'ruff' == 1
+      local can_manage_ruff_with_mason = python_supports_mason_pypi()
+
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -236,7 +248,7 @@ return {
             },
           },
         },
-        ruff = {
+        ruff = (has_ruff or can_manage_ruff_with_mason) and {
           -- Ruff acts as both a linter (LSP diagnostics) and formatter (via conform).
           -- These settings control the LSP/linting side.
           init_options = {
@@ -244,11 +256,11 @@ return {
               lineLength = 120, -- Max line length (mirrors formatter setting below)
               lint = {
                 extendSelect = { 'E501' }, -- E501: Line too long
-                ignore = { 'W391' },       -- W391: Blank line at end of file
+                ignore = { 'W391' }, -- W391: Blank line at end of file
               },
             },
           },
-        },
+        } or nil,
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -291,8 +303,12 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'ruff',
       })
+
+      if not has_ruff and can_manage_ruff_with_mason then
+        table.insert(ensure_installed, 'ruff')
+      end
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {

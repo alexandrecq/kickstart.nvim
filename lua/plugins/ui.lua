@@ -65,8 +65,49 @@ return {
   },
   { -- Highlight, edit, and navigate code
    'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
+    lazy = false,
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    config = function(_, opts)
+      local ok, configs = pcall(require, 'nvim-treesitter.configs')
+      if ok then
+        configs.setup(opts)
+        return
+      end
+
+      local ts = require 'nvim-treesitter'
+      ts.setup {}
+
+      if opts.ensure_installed and #opts.ensure_installed > 0 then
+        ts.install(opts.ensure_installed)
+      end
+
+      local group = vim.api.nvim_create_augroup('nvim-treesitter-compat', { clear = true })
+
+      if opts.highlight and opts.highlight.enable then
+        vim.api.nvim_create_autocmd('FileType', {
+          group = group,
+          callback = function(args)
+            pcall(vim.treesitter.start, args.buf)
+          end,
+        })
+      end
+
+      if opts.indent and opts.indent.enable then
+        local disabled = opts.indent.disable or {}
+        vim.api.nvim_create_autocmd('FileType', {
+          group = group,
+          callback = function(args)
+            if vim.list_contains(disabled, vim.bo[args.buf].filetype) then
+              return
+            end
+
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end,
+        })
+      end
+    end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
