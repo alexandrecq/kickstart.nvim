@@ -253,6 +253,26 @@
 
 ---
 
+## Markdown
+
+### Browser Preview (`markdown-preview.nvim`)
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>mo` | Open markdown preview in browser | [C] |
+| `<leader>mt` | Toggle markdown preview for current buffer | [C] |
+| `<leader>mc` | Close markdown preview | [C] |
+
+### In-Editor Rendering (`render-markdown.nvim`)
+
+`render-markdown.nvim` is enabled automatically for markdown buffers.
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>rm` | Toggle Render Markdown. | [C] |
+
+---
+
 ## Completion (blink.cmp — `default` preset)
 
 *Active in insert mode when the completion menu is open.*
