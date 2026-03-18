@@ -119,6 +119,7 @@
 | Key | Action | Source |
 |-----|--------|--------|
 | `<leader>sf` | Find files | [K] |
+| `<leader>sH` | Find files under `~/` | [C] |
 | `<leader>sg` | Live grep (project-wide) | [K] |
 | `<leader>sw` | Grep word under cursor | [K] |
 | `<leader>ps` | Grep with prompt (project search) | [C] |
@@ -305,15 +306,29 @@
 
 ## mini.surround (text surrounding)
 
-*No custom binds — uses mini.surround defaults.*
+*No custom binds — uses `mini.surround` defaults.*
+
+These are multi-key mappings. `s` by itself is still Vim's normal substitute command, so you need to type the full sequence such as `sa`, `sd`, or `sr`.
+
+For `sd`, `sr`, `sf`, `sF`, `sh`, and `sn`, place the cursor inside or on the surrounding you want to target.
 
 | Key | Action | Example |
 |-----|--------|---------|
-| `sa{motion}` | Add surround | `saiw)` → surround word with `()` |
-| `sd{char}` | Delete surround | `sd'` → remove `'` |
-| `sr{old}{new}` | Replace surround | `sr)'` → replace `)` with `'` |
+| `sa{motion}{char}` | Add surround around a motion/textobject | `saiw)` → surround inner word with `( word )` |
+| `sd{char}` | Delete nearest matching surround under cursor | `sd'` → remove surrounding quotes |
+| `sr{old}{new}` | Replace one surround with another | `sr)'` → replace surrounding `()` with quotes |
 | `sf{char}` | Find surround (forward) | |
 | `sF{char}` | Find surround (backward) | |
+| `sh{char}` | Highlight matching surround briefly | |
+| `sn{char}` | Update search to next matching surround | |
+
+Quick sanity checks:
+
+| Starting text | Keys | Result |
+|---------------|------|--------|
+| `hello` | `saiw)` | `(hello)` |
+| `'hello'` with cursor on `e` | `sd'` | `hello` |
+| `(hello)` with cursor on `e` | `sr)'` | `'hello'` |
 
 ## mini.ai (enhanced text objects)
 
