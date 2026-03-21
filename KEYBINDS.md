@@ -167,6 +167,7 @@
 
 | Key | Action |
 |-----|--------|
+| `r` | Refresh status window |
 | `s` | Stage file/hunk |
 | `u` | Unstage file/hunk |
 | `=` | Toggle inline diff |
@@ -266,7 +267,7 @@
 
 ### In-Editor Rendering (`render-markdown.nvim`)
 
-`render-markdown.nvim` is enabled automatically for markdown buffers.
+`render-markdown.nvim` is disabled by default. Use `<leader>rm` to toggle it on.
 
 | Key | Action | Source |
 |-----|--------|--------|

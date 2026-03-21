@@ -41,8 +41,8 @@ vim.keymap.set('n', '<M-k>', '<C-w>k', { desc = 'Move focus to the upper window'
 -- Tabs:
 vim.keymap.set('n', '<leader>tr', ':tabr<CR>', { desc = '[T]ab fi[R]st' })
 vim.keymap.set('n', '<leader>tl', ':tabl<CR>', { desc = '[T]ab [L]ast' })
-vim.keymap.set('n', '<C-h>', ':tabp<CR>', { desc = 'Move to left tab' })
-vim.keymap.set('n', '<C-l>', ':tabn<CR>', { desc = 'Move to right tab' })
+-- vim.keymap.set('n', '<C-h>', ':tabp<CR>', { desc = 'Move to left tab' })
+-- vim.keymap.set('n', '<C-l>', ':tabn<CR>', { desc = 'Move to right tab' })
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
 vim.keymap.set('n', '<leader>te', ':tabedit <C-r>=expand("%:p:h")<CR>/', { desc = '[T]ab [E]dit' })
 vim.keymap.set('n', '<leader>tm', ':tabmove ', { desc = '[T]ab [M]ove' })
