@@ -120,6 +120,7 @@ require('lazy').setup({
   require 'custom.plugins.undotree',
   require 'custom.plugins.fugitive',
   require 'custom.plugins.rainbow-delimiters',
+  require 'custom.plugins.harpoon',
   require 'custom.plugins.render-markdown',
   require 'custom.plugins.markdown-preview',
 

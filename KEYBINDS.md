@@ -238,6 +238,19 @@
 
 ---
 
+## Harpoon
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>a` | Add current file to harpoon list | [C] |
+| `<C-e>` | Toggle harpoon quick menu (editable list) | [C] |
+| `<leader>1` | Jump to harpoon file 1 | [C] |
+| `<leader>2` | Jump to harpoon file 2 | [C] |
+| `<leader>3` | Jump to harpoon file 3 | [C] |
+| `<leader>4` | Jump to harpoon file 4 | [C] |
+
+---
+
 ## Undotree
 
 | Key | Action | Source |
