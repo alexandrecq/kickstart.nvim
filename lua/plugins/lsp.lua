@@ -309,6 +309,20 @@ return {
         table.insert(ensure_installed, 'ruff')
       end
 
+      require('mason').setup {
+        install_root_dir = vim.fn.stdpath 'data' .. '/mason',
+        PATH = 'prepend',
+        pip = {
+          -- Bypassing corporate mirror that might be missing some packages or versions
+          -- while we are on a new machine setup.
+          install_args = { '--index-url', 'https://pypi.org/simple' },
+        },
+        npm = {
+          -- Bypassing corporate mirror that might have expired tokens in ~/.npmrc
+          install_args = { '--registry', 'https://registry.npmjs.org' },
+        },
+      }
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
