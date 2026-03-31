@@ -7,9 +7,7 @@ return {
       'MarkdownPreviewStop',
       'MarkdownPreviewToggle',
     },
-    build = function()
-      vim.fn['mkdp#util#install']()
-    end,
+    build = 'cd app && npm install --registry https://registry.npmjs.org',
     init = function()
       vim.g.mkdp_filetypes = { 'markdown' }
     end,
