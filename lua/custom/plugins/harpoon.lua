@@ -13,7 +13,7 @@ return {
       end, { desc = 'Harpoon [A]dd file' })
 
       -- Open the quick menu (edit the list)
-      vim.keymap.set('n', '<C-e>', function()
+      vim.keymap.set('n', '<leader>e', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = 'Harpoon toggle menu' })
 

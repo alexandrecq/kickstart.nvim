@@ -14,7 +14,6 @@
 | `<leader>q` | Quit | [C] |
 | `<leader>qa` | Quit all | [C] |
 | `<leader>ms` | Save session + quit all (`:mksession!` then `:xa`) | [C] |
-| `<leader>eb` | Edit `~/.bashrc` in split | [C] |
 | `<leader>pv` | Open netrw file explorer (`:Ex`) | [C] |
 | `<leader>f` | Format buffer (conform.nvim, manual — no format-on-save) | [C] |
 
@@ -191,15 +190,15 @@
 |-----|------|--------|--------|
 | `]c` | n | Next hunk | [K] |
 | `[c` | n | Previous hunk | [K] |
-| `<leader>hs` | n/v | Stage hunk | [K] |
-| `<leader>hr` | n/v | Reset hunk (discard) | [K] |
-| `<leader>hS` | n | Stage entire buffer | [K] |
-| `<leader>hR` | n | Reset entire buffer | [K] |
-| `<leader>hu` | n | Undo stage hunk | [K] |
-| `<leader>hp` | n | Preview hunk inline | [K] |
-| `<leader>hb` | n | Blame current line (popup) | [K] |
-| `<leader>hd` | n | Diff against index | [K] |
-| `<leader>hD` | n | Diff against last commit | [K] |
+| `ghs` | n/v | Stage hunk | [K] |
+| `ghr` | n/v | Reset hunk (discard) | [K] |
+| `ghS` | n | Stage entire buffer | [K] |
+| `ghR` | n | Reset entire buffer | [K] |
+| `ghu` | n | Undo stage hunk | [K] |
+| `ghp` | n | Preview hunk inline | [K] |
+| `ghb` | n | Blame current line (popup) | [K] |
+| `ghd` | n | Diff against index | [K] |
+| `ghD` | n | Diff against last commit | [K] |
 | `<leader>tb` | n | Toggle inline blame | [K] |
 | `<leader>tD` | n | Toggle show deleted lines | [K] |
 
@@ -243,7 +242,7 @@
 | Key | Action | Source |
 |-----|--------|--------|
 | `<leader>a` | Add current file to harpoon list | [C] |
-| `<C-e>` | Toggle harpoon quick menu (editable list) | [C] |
+| `<leader>e` | Toggle harpoon quick menu (editable list) | [C] |
 | `<leader>1` | Jump to harpoon file 1 | [C] |
 | `<leader>2` | Jump to harpoon file 2 | [C] |
 | `<leader>3` | Jump to harpoon file 3 | [C] |
