@@ -102,12 +102,12 @@
 
 | Key | Action | Source |
 |-----|--------|--------|
-| `[d` | Previous diagnostic | [K] |
-| `]d` | Next diagnostic | [K] |
+| `[d` | Previous diagnostic (auto-opens float) | [K] |
+| `]d` | Next diagnostic (auto-opens float) | [K] |
 | `<leader>de` | Show diagnostic in float | [K] |
 | `<leader>dq` | Send diagnostics to quickfix list | [K] |
 
-> **Note:** Virtual text is disabled. Use `<leader>de` to read the full message under the cursor.
+> **Note:** Virtual text and automatic diagnostic floating windows are enabled. Use `[d` and `]d` to navigate and read error messages instantly.
 
 ---
 
@@ -118,6 +118,7 @@
 | Key | Action | Source |
 |-----|--------|--------|
 | `<leader>sf` | Find files | [K] |
+| `<leader>sc` | Search commands | [K] |
 | `<leader>sH` | Find files under `~/` | [C] |
 | `<leader>sg` | Live grep (project-wide) | [K] |
 | `<leader>sw` | Grep word under cursor | [K] |
@@ -388,3 +389,5 @@ Quick sanity checks:
 
 Press `<leader>` and pause — which-key will show a popup of available next keys.
 Also works with `g`, `]`, `[`, `z` etc.
+
+Standard Neovim LSP commands are grouped under **`gr`** (LSP Actions).

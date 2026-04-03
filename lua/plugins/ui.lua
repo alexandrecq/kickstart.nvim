@@ -70,43 +70,41 @@ return {
     build = ':TSUpdate',
     -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     config = function(_, opts)
-      local ok, configs = pcall(require, 'nvim-treesitter.configs')
-      if ok then
-        configs.setup(opts)
-        return
-      end
+      local configs = require 'nvim-treesitter.configs'
+      configs.setup(opts)
 
-      local ts = require 'nvim-treesitter'
-      ts.setup {}
+      local available_parsers = require('nvim-treesitter.parsers').get_parser_configs()
 
-      if opts.ensure_installed and #opts.ensure_installed > 0 then
-        ts.install(opts.ensure_installed)
-      end
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('kickstart-treesitter-attach', { clear = true }),
+        callback = function(args)
+          local buf = args.buf
+          local filetype = vim.bo[buf].filetype
+          local language = vim.treesitter.language.get_lang(filetype)
+          if not language then
+            return
+          end
 
-      local group = vim.api.nvim_create_augroup('nvim-treesitter-compat', { clear = true })
+          local installed_parsers = require('nvim-treesitter.info').installed_parsers()
 
-      if opts.highlight and opts.highlight.enable then
-        vim.api.nvim_create_autocmd('FileType', {
-          group = group,
-          callback = function(args)
-            pcall(vim.treesitter.start, args.buf)
-          end,
-        })
-      end
+          local function treesitter_try_attach(buffer, lang)
+            pcall(vim.treesitter.start, buffer, lang)
+          end
 
-      if opts.indent and opts.indent.enable then
-        local disabled = opts.indent.disable or {}
-        vim.api.nvim_create_autocmd('FileType', {
-          group = group,
-          callback = function(args)
-            if vim.list_contains(disabled, vim.bo[args.buf].filetype) then
-              return
-            end
-
-            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-          end,
-        })
-      end
+          if vim.tbl_contains(installed_parsers, language) then
+            -- enable the parser if it is installed
+            treesitter_try_attach(buf, language)
+          elseif available_parsers[language] then
+            -- if a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
+            require('nvim-treesitter.install').install(language, function()
+              treesitter_try_attach(buf, language)
+            end)
+          else
+            -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+            treesitter_try_attach(buf, language)
+          end
+        end,
+      })
     end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
