@@ -171,7 +171,7 @@ return {
             [vim.diagnostic.severity.HINT] = '󰌶 ',
           },
         } or {},
-        virtual_text = true,
+        virtual_text = false,
         jump = { float = true },
       }
 
