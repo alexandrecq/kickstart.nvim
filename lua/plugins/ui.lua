@@ -70,41 +70,7 @@ return {
     build = ':TSUpdate',
     -- main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     config = function(_, opts)
-      local configs = require 'nvim-treesitter.configs'
-      configs.setup(opts)
-
-      local available_parsers = require('nvim-treesitter.parsers').get_parser_configs()
-
-      vim.api.nvim_create_autocmd('FileType', {
-        group = vim.api.nvim_create_augroup('kickstart-treesitter-attach', { clear = true }),
-        callback = function(args)
-          local buf = args.buf
-          local filetype = vim.bo[buf].filetype
-          local language = vim.treesitter.language.get_lang(filetype)
-          if not language then
-            return
-          end
-
-          local installed_parsers = require('nvim-treesitter.info').installed_parsers()
-
-          local function treesitter_try_attach(buffer, lang)
-            pcall(vim.treesitter.start, buffer, lang)
-          end
-
-          if vim.tbl_contains(installed_parsers, language) then
-            -- enable the parser if it is installed
-            treesitter_try_attach(buf, language)
-          elseif available_parsers[language] then
-            -- if a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
-            require('nvim-treesitter.install').install(language, function()
-              treesitter_try_attach(buf, language)
-            end)
-          else
-            -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
-            treesitter_try_attach(buf, language)
-          end
-        end,
-      })
+      require('nvim-treesitter.configs').setup(opts)
     end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
