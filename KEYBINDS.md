@@ -30,12 +30,16 @@
 
 ### Clipboard & Registers
 
+*Note: System clipboard (`+` register) and Neovim unnamed register are independent.*
+
 | Key | Mode | Action | Source |
 |-----|------|--------|--------|
-| `<leader>y` | n/v | Yank to system clipboard (takes a motion: `<leader>yw`, `<leader>yy`, etc.) | [C] |
-| `<leader>Y` | n | Yank entire line to system clipboard (no motion needed, equivalent to `<leader>yy`) | [C] |
-| `<leader>p` | visual | Paste without clobbering yank register (cuts to void `"_`) | [C] |
-| `<leader>d` | n/v | Delete into void register (don't overwrite yank) | [C] |
+| `<leader>y` | n/v | [Y]ank to system clipboard (takes a motion) | [C] |
+| `<leader>Y` | n | [Y]ank line to system clipboard | [C] |
+| `<leader>p` | n/v | [P]aste from system clipboard (after cursor) | [C] |
+| `<leader>P` | n/v | [P]aste from system clipboard (before cursor) | [C] |
+| `<leader>v` | visual | [V]oid paste (paste without clobbering yank register) | [C] |
+| `<leader>d` | n/v | [D]elete into void register (don't overwrite yank) | [C] |
 
 ### Visual Mode Line Movement
 

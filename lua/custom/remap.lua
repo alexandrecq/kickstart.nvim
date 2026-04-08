@@ -23,14 +23,19 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 -- paste without replacing yanked text (cut into void register)
-vim.keymap.set('x', '<leader>p', '"_dP')
+vim.keymap.set('x', '<leader>v', '"_dP', { desc = '[V]oid paste (paste without overwriting register)' })
 -- delete into void register
-vim.keymap.set('n', '<leader>d', '"_d')
-vim.keymap.set('v', '<leader>d', '"_d')
+vim.keymap.set('n', '<leader>d', '"_d', { desc = '[D]elete into void register' })
+vim.keymap.set('v', '<leader>d', '"_d', { desc = '[D]elete into void register' })
 -- yank into system clipboard
-vim.keymap.set('n', '<leader>y', '"+y')
-vim.keymap.set('v', '<leader>y', '"+y')
-vim.keymap.set('n', '<leader>Y', '"+Y')
+vim.keymap.set('n', '<leader>y', '"+y', { desc = '[Y]ank to system clipboard' })
+vim.keymap.set('v', '<leader>y', '"+y', { desc = '[Y]ank to system clipboard' })
+vim.keymap.set('n', '<leader>Y', '"+Y', { desc = '[Y]ank line to system clipboard' })
+-- paste from system clipboard
+vim.keymap.set('n', '<leader>p', '"+p', { desc = '[P]aste from system clipboard' })
+vim.keymap.set('n', '<leader>P', '"+P', { desc = '[P]aste from system clipboard (before)' })
+vim.keymap.set('v', '<leader>p', '"+p', { desc = '[P]aste from system clipboard' })
+vim.keymap.set('v', '<leader>P', '"+P', { desc = '[P]aste from system clipboard (before)' })
 
 -- Window navigation
 vim.keymap.set('n', '<M-h>', '<C-w>h', { desc = 'Move focus to the left window' })
