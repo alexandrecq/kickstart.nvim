@@ -135,7 +135,7 @@
 | `<leader>sr` | Resume last Telescope session | [K] |
 | `<leader>s.` | Recent files | [K] |
 | `<leader>sn` | Search Neovim config files | [K] |
-| `<leader><leader>` | Open buffers | [K] |
+| `<leader>b` | Search open [B]uffers | [K] |
 | `<leader>/` | Fuzzy search in current buffer | [K] |
 
 ### Inside Telescope picker (built-in)
@@ -248,10 +248,7 @@
 |-----|--------|--------|
 | `<leader>a` | Add current file to harpoon list | [C] |
 | `<leader>e` | Toggle harpoon quick menu (editable list) | [C] |
-| `<leader>1` | Jump to harpoon file 1 | [C] |
-| `<leader>2` | Jump to harpoon file 2 | [C] |
-| `<leader>3` | Jump to harpoon file 3 | [C] |
-| `<leader>4` | Jump to harpoon file 4 | [C] |
+| `<leader>0-9` | Jump to harpoon file 0-9 | [C] |
 
 ---
 
