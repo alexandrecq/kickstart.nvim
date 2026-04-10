@@ -121,6 +121,7 @@ require('lazy').setup({
   require 'custom.plugins.fugitive',
   require 'custom.plugins.rainbow-delimiters',
   require 'custom.plugins.harpoon',
+  require 'custom.plugins.codesearch',
   require 'custom.plugins.render-markdown',
   require 'custom.plugins.markdown-preview',
 

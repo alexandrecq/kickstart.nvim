@@ -84,6 +84,19 @@
 
 ---
 
+## CodeSearch (Google Internal)
+
+*Only active on Google machines.*
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>csf` | Find files in CodeSearch (fuzzy) | [C] |
+| `<leader>csq` | Run arbitrary CodeSearch query | [C] |
+| `<leader>csw` | Search for word under cursor in CodeSearch | [C] |
+| `<leader>css` | Search for file with same name as word under cursor | [C] |
+
+---
+
 ## LSP
 
 *These mappings are buffer-local and active only when an LSP server is attached.*

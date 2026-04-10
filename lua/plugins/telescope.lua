@@ -55,20 +55,38 @@ return {
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
       --
-      layout_config = {
-        width = function(_, cols, _)
-          if cols > 200 then
-            return 170
-          else
-            return math.floor(cols * 0.87)
-          end
-        end,
-        preview_cutoff = 120,
-      },
       defaults = {
-        -- layout_config = {
-        --   horizontal = { width = .9 }
-        -- },
+        -- layout_strategy = 'vertical',
+        layout_config = {
+          width = function(_, cols, _)
+            if cols > 200 then
+              return 170
+            else
+              return math.floor(cols * 0.87)
+            end
+          end,
+          preview_cutoff = 120,
+        },
+        path_display = function(opts, path)
+          -- Google3 specific path shortening
+          path = path:gsub('^/google/src/cloud/[^/]+/[^/]+/google3/', 'google3/', 1)
+          path = path:gsub('^google3/java/com/google/', 'g3/j/c/g/', 1)
+          path = path:gsub('^google3/javatests/com/google/', 'g3/jt/c/g/', 1)
+          path = path:gsub('^google3/third_party/', 'g3/3rdp/', 1)
+          path = path:gsub('^google3/', 'g3/', 1)
+
+          -- Do truncation. This allows us to combine our custom display formatter
+          -- with the built-in truncation.
+          local new_opts = {
+            path_display = {
+              truncate = true,
+            },
+            __length = opts.__length,
+          }
+          path = require('telescope.utils').transform_path(new_opts, path)
+          opts.__length = new_opts.__length
+          return path
+        end,
         mappings = {
           i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         },
