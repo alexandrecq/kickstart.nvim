@@ -8,3 +8,5 @@ lazy-lock.json
 
 .undo/
 .backup/
+.jetskicli/
+GEMINI.md

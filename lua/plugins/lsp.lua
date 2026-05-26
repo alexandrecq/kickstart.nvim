@@ -42,28 +42,6 @@ return {
       local has_ruff = vim.fn.executable 'ruff' == 1
       local can_manage_ruff_with_mason = python_supports_mason_pypi()
 
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
       -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
@@ -74,6 +52,21 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.name ~= 'ciderlsp' and vim.startswith(vim.api.nvim_buf_get_name(event.buf), '/google') then
+            vim.schedule(function()
+              if vim.api.nvim_buf_is_valid(event.buf) then
+                vim.lsp.buf_detach_client(event.buf, client.id)
+                -- Clear any diagnostics published by this public LSP before it was detached
+                local ns = vim.lsp.diagnostic.get_namespace(client.id)
+                if ns then
+                  vim.diagnostic.reset(ns, event.buf)
+                end
+              end
+            end)
+            return
+          end
+
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
           --
@@ -295,17 +288,72 @@ return {
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        -- We configure handlers to be empty because we are manually setting up servers below
+        handlers = {},
       }
+
+      -- Setup servers manually to ensure robust configuration and bypass logic
+      local lsp_configs = require('lspconfig.configs')
+      for server_name, server in pairs(servers) do
+        local config = lsp_configs[server_name]
+        if not config then
+          goto continue
+        end
+
+        local default_root_dir = server.root_dir or (config.document_config and config.document_config.default_config and config.document_config.default_config.root_dir)
+        server.root_dir = function(fname, bufnr)
+          if vim.startswith(fname, '/google') then
+            return nil
+          end
+          if default_root_dir then
+            return default_root_dir(fname, bufnr)
+          end
+          return require('lspconfig.util').path.dirname(fname)
+        end
+
+        server.single_file_support = false
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        config.setup(server)
+
+        ::continue::
+      end
+
+      -- Configure CiderLSP if available
+      local ciderlsp_bin = vim.env.CIDERLSP_BIN
+      if ciderlsp_bin and vim.fn.executable(ciderlsp_bin) == 1 then
+        local configs = require('lspconfig.configs')
+        if not configs.ciderlsp then
+          local ciderlsp_settings = {
+            "enable_placeholders",
+            "enable:inlay_hints_kotlin_show_local_variable_types",
+          }
+          configs.ciderlsp = {
+            default_config = {
+              cmd = {
+                ciderlsp_bin,
+                "--tooltag=nvim-lsp",
+                "--noforward_sync_responses",
+                "--request_options=" .. table.concat(ciderlsp_settings, ","),
+              },
+              filetypes = {
+                "borg", "bzl", "c", "cpp", "cs", "dart", "gcl", "go", "googlesql",
+                "graphql", "java", "kotlin", "markdown", "mlir", "ncl", "objc",
+                "patchpanel", "proto", "python", "qflow", "soy", "swift", "textpb",
+                "typescript"
+              },
+              root_dir = function(filename)
+                if vim.startswith(filename, '/google') then
+                  return '/google'
+                end
+                return nil
+              end,
+            },
+          }
+        end
+        require('lspconfig.configs').ciderlsp.setup({
+          capabilities = capabilities,
+        })
+      end
     end,
   },
 
