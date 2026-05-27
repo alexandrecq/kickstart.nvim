@@ -125,6 +125,10 @@ require('lazy').setup({
   require 'custom.plugins.render-markdown',
   require 'custom.plugins.markdown-preview',
 
+  -- Fig/Mercurial Google-internal plugins
+  require 'custom.plugins.figtree',
+  require 'custom.plugins.telescope-fig',
+  require 'custom.plugins.signify',
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!

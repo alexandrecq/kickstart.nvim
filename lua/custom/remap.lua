@@ -60,6 +60,10 @@ vim.keymap.set('n', '<leader>ps', function()
   builtin.grep_string { search = vim.fn.input 'Grep > ' }
 end, { desc = '[P]roject [S]earch' })
 
+-- Telescope Fig (requires telescope-fig: lua/custom/plugins/telescope-fig.lua)
+vim.keymap.set('n', '<leader>hs', '<cmd>Telescope fig status<CR>', { desc = '[H]g [S]tatus (Telescope)' })
+vim.keymap.set('n', '<leader>hx', '<cmd>Telescope fig xl<CR>', { desc = '[H]g [X]l tree (Telescope)' })
+
 -- Git (requires vim-fugitive: lua/custom/plugins/fugitive.lua)
 vim.keymap.set('n', '<leader>gg', vim.cmd.Git, { desc = '[G]it status window (fugitive)' })
 vim.keymap.set('n', '<leader>gc', ':Git commit<CR>', { desc = '[G]it [C]ommit' })
@@ -68,3 +72,6 @@ vim.keymap.set('n', '<leader>gl', ':Git log --oneline<CR>', { desc = '[G]it [L]o
 vim.keymap.set('n', '<leader>gb', ':Git blame<CR>', { desc = '[G]it [B]lame (full file)' })
 vim.keymap.set('n', '<leader>gp', ':Git push<CR>', { desc = '[G]it [P]ush' })
 vim.keymap.set('n', '<leader>gP', ':Git pull<CR>', { desc = '[G]it [P]ull' })
+
+-- Fig/Mercurial (requires figtree: lua/custom/plugins/figtree.lua)
+-- Mapped to: <leader>hh -> require('figtree').toggle() (Figtree status panel)
