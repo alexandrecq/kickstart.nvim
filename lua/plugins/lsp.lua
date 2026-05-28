@@ -65,10 +65,12 @@ return {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.name ~= 'ciderlsp' and vim.startswith(vim.api.nvim_buf_get_name(event.buf), '/google') then
+          local bufname = vim.api.nvim_buf_get_name(event.buf)
+          local resolved_bufname = vim.fn.resolve(bufname)
+          if client and client.name ~= 'ciderlsp' and (vim.startswith(resolved_bufname, '/google') or string.find(resolved_bufname, '/google3/')) then
             vim.schedule(function()
               if vim.api.nvim_buf_is_valid(event.buf) then
-                vim.lsp.buf_detach_client(event.buf, client.id)
+                pcall(vim.lsp.buf_detach_client, event.buf, client.id)
                 -- Clear any diagnostics published by this public LSP before it was detached
                 local ns = vim.lsp.diagnostic.get_namespace(client.id)
                 if ns then
@@ -307,6 +309,7 @@ return {
       -- Setup servers manually to ensure robust configuration and bypass logic
       local lsp_configs = require('lspconfig.configs')
       for server_name, server in pairs(servers) do
+        pcall(require, 'lspconfig.configs.' .. server_name)
         local config = lsp_configs[server_name]
         if not config then
           goto continue
@@ -314,7 +317,8 @@ return {
 
         local default_root_dir = server.root_dir or (config.document_config and config.document_config.default_config and config.document_config.default_config.root_dir)
         server.root_dir = function(fname, bufnr)
-          if vim.startswith(fname, '/google') then
+          local resolved_fname = vim.fn.resolve(fname)
+          if vim.startswith(resolved_fname, '/google') or string.find(resolved_fname, '/google3/') then
             return nil
           end
           if default_root_dir then
@@ -325,6 +329,18 @@ return {
 
         server.single_file_support = false
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
+        local old_on_new_config = server.on_new_config
+        server.on_new_config = function(new_config, new_root_dir)
+          if old_on_new_config then
+            old_on_new_config(new_config, new_root_dir)
+          end
+          local resolved_root = new_root_dir and vim.fn.resolve(new_root_dir)
+          if resolved_root and (vim.startswith(resolved_root, '/google') or string.find(resolved_root, '/google3/')) then
+            new_config.enabled = false
+          end
+        end
+
         config.setup(server)
 
         ::continue::
