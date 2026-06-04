@@ -4,6 +4,23 @@ if not path or vim.fn.isdirectory(path) == 0 then
   return {}
 end
 
+-- List of LDAP users to search in google3/experimental/users/ when using <leader>cse
+local EXPERIMENTAL_USERS = {
+  'alexandrecq',
+  'lixiny',
+  'liyenhsu',
+}
+
+local function get_experimental_query()
+  if #EXPERIMENTAL_USERS == 0 then
+    return 'f:experimental/users/nonexistent_user_placeholder'
+  elseif #EXPERIMENTAL_USERS == 1 then
+    return 'f:experimental/users/' .. EXPERIMENTAL_USERS[1]
+  else
+    return 'f:experimental/users/(' .. table.concat(EXPERIMENTAL_USERS, '|') .. ')'
+  end
+end
+
 return {
   {
     dir = path,
@@ -20,6 +37,12 @@ return {
 
       -- Custom mappings for quick access
       map('<leader>csf', require('telescope').extensions.codesearch.find_files, '[F]ind files')
+      map('<leader>cse', function()
+        require('telescope').extensions.codesearch.find_files({
+          experimental = true,
+          hidden_query = get_experimental_query(),
+        })
+      end, 'Find E[X]perimental files')
       map('<leader>csq', require('telescope').extensions.codesearch.find_query, '[Q]uery')
       map('<leader>csw', function()
         require('telescope').extensions.codesearch.find_query { default_text_expand = '<cword>' }

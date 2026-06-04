@@ -91,6 +91,7 @@
 | Key | Action | Source |
 |-----|--------|--------|
 | `<leader>csf` | Find files in CodeSearch (fuzzy) | [C] |
+| `<leader>cse` | Find experimental files (filtered by configured users) | [C] |
 | `<leader>csq` | Run arbitrary CodeSearch query | [C] |
 | `<leader>csw` | Search for word under cursor in CodeSearch | [C] |
 | `<leader>css` | Search for file with same name as word under cursor | [C] |
