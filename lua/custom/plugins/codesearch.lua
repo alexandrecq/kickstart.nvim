@@ -4,7 +4,7 @@ if not path or vim.fn.isdirectory(path) == 0 then
   return {}
 end
 
--- List of LDAP users to search in google3/experimental/users/ when using <leader>cse
+-- List of LDAP users to search in google3/experimental/waymo/users/ when using <leader>cse
 local EXPERIMENTAL_USERS = {
   'alexandrecq',
   'lixiny',
@@ -12,13 +12,15 @@ local EXPERIMENTAL_USERS = {
 }
 
 local function get_experimental_query()
+  local query
   if #EXPERIMENTAL_USERS == 0 then
-    return 'f:experimental/users/nonexistent_user_placeholder'
+    query = 'f:experimental/waymo/users/nonexistent_user_placeholder'
   elseif #EXPERIMENTAL_USERS == 1 then
-    return 'f:experimental/users/' .. EXPERIMENTAL_USERS[1]
+    query = 'f:experimental/waymo/users/' .. EXPERIMENTAL_USERS[1]
   else
-    return 'f:experimental/users/(' .. table.concat(EXPERIMENTAL_USERS, '|') .. ')'
+    query = 'f:experimental/waymo/users/(' .. table.concat(EXPERIMENTAL_USERS, '|') .. ')'
   end
+  return ' ' .. query .. ' '
 end
 
 return {
@@ -42,7 +44,7 @@ return {
           experimental = true,
           hidden_query = get_experimental_query(),
         })
-      end, 'Find E[X]perimental files')
+      end, 'Include [E]xperimental files')
       map('<leader>csq', require('telescope').extensions.codesearch.find_query, '[Q]uery')
       map('<leader>csw', function()
         require('telescope').extensions.codesearch.find_query { default_text_expand = '<cword>' }
