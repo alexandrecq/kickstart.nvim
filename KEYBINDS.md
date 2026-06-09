@@ -203,12 +203,17 @@
 | `<leader>gf` | Git files (Telescope) | [C] |
 | `<leader>gs` | Git status (Telescope) | [C] |
 
-### Gitsigns (hunk-level operations)
+### VCS Hunk Navigation (Git & Fig/Mercurial)
 
 | Key | Mode | Action | Source |
 |-----|------|--------|--------|
-| `]c` | n | Next hunk | [K] |
-| `[c` | n | Previous hunk | [K] |
+| `]c` | n | Next hunk / modified block | [K]/[C] |
+| `[c` | n | Previous hunk / modified block | [K]/[C] |
+
+### Gitsigns (Git-specific hunk actions)
+
+| Key | Mode | Action | Source |
+|-----|------|--------|--------|
 | `ghs` | n/v | Stage hunk | [K] |
 | `ghr` | n/v | Reset hunk (discard) | [K] |
 | `ghS` | n | Stage entire buffer | [K] |
