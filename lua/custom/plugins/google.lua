@@ -1,5 +1,6 @@
 return {
   {
+    --Enable syntax highlighting for specific filetypes
     name = 'google-internal',
     dir = '/usr/share/vim/google',
     lazy = false, -- Load at startup

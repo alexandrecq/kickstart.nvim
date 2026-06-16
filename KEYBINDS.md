@@ -203,6 +203,16 @@
 | `<leader>gf` | Git files (Telescope) | [C] |
 | `<leader>gs` | Git status (Telescope) | [C] |
 
+### Fig / Mercurial Integration
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>hs` | Fig status (Telescope) | [C] |
+| `<leader>hx` | Fig xl commit tree (Telescope) | [C] |
+| `<leader>hc` | Files modified in current CL (Telescope) | [C] |
+| `<leader>hh` | Toggle Figtree status panel | [C] |
+
+
 ### VCS Hunk Navigation (Git & Fig/Mercurial)
 
 | Key | Mode | Action | Source |
