@@ -129,6 +129,7 @@ require('lazy').setup({
   require 'custom.plugins.figtree',
   require 'custom.plugins.telescope-fig',
   require 'custom.plugins.signify',
+  require 'custom.plugins.google',
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
