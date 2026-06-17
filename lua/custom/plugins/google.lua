@@ -12,8 +12,16 @@ return {
       -- Source the main Google Vim configuration
       vim.cmd('source /usr/share/vim/google/google.vim')
 
-      -- Force googlesql filetype for SQL files inside google3/depot
+      -- Force Google-specific filetypes
       vim.filetype.add({
+        -- 1. Simple extensions (global match since they are unique to Google)
+        extension = {
+          gcl = 'gcl',
+          pagg = 'gcl',
+          topic = 'gcl',
+          wf = 'gcl',
+        },
+        -- 2. Path-restricted patterns (to avoid clashing with standard SQL)
         pattern = {
           ['.*/google3/.*%.sql'] = 'googlesql',
           ['.*/google3/.*%.sql[pmt]'] = 'googlesql',
