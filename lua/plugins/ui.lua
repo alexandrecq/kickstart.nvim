@@ -61,6 +61,9 @@ return {
         return '%2l:%-2v'
       end
 
+      --Add jump highlights. Remaps f,t,F,T and allows f/F to repeat jumps (like ;)
+      require('mini.jump').setup()
+
     end, -- end mini config
   },
   { -- Highlight, edit, and navigate code
