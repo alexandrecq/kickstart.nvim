@@ -1,3 +1,15 @@
+local function shorten_path(path, max_parts)
+  max_parts = max_parts or 3
+  local parts = {}
+  for part in string.gmatch(path, '[^/]+') do
+    table.insert(parts, part)
+  end
+  if #parts > max_parts then
+    return table.concat(parts, '/', #parts - max_parts + 1)
+  end
+  return path
+end
+
 return {
   {
     'ThePrimeagen/harpoon',
@@ -5,7 +17,13 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local harpoon = require 'harpoon'
-      harpoon:setup()
+      harpoon:setup {
+        default = {
+          display = function(list_item)
+            return shorten_path(list_item.value, 3)
+          end,
+        },
+      }
 
       -- Mark current file
       vim.keymap.set('n', '<leader>a', function()
