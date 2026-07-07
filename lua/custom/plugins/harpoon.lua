@@ -17,12 +17,29 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local harpoon = require 'harpoon'
+
+      vim.api.nvim_set_hl(0, 'HarpoonDir', { fg = '#61afef', bold = true })
+      vim.api.nvim_set_hl(0, 'HarpoonSubdir', { fg = '#FFFFFF' })
+      vim.api.nvim_set_hl(0, 'HarpoonFilename', { fg = '#e06c75', bold = true })
+      vim.api.nvim_set_hl(0, 'HarpoonSlash', { fg = '#5c6370' })
+
       harpoon:setup {
         default = {
           display = function(list_item)
             return shorten_path(list_item.value, 3)
           end,
         },
+      }
+
+      harpoon:extend {
+        UI_CREATE = function(cx)
+          vim.api.nvim_buf_call(cx.bufnr, function()
+            vim.fn.matchadd('HarpoonSlash', [[/]])
+            vim.fn.matchadd('HarpoonFilename', [[[^/]\+$]])
+            vim.fn.matchadd('HarpoonDir', [[^[^/]\+\ze/]])
+            vim.fn.matchadd('HarpoonSubdir', [[/\zs[^/]\+\ze/]])
+          end)
+        end,
       }
 
       -- Mark current file
