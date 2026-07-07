@@ -203,36 +203,37 @@
 | `<leader>gf` | Git files (Telescope) | [C] |
 | `<leader>gs` | Git status (Telescope) | [C] |
 
-### Fig / Mercurial Integration
+### VCS Hunk & Change Actions (Git vs. Fig / Mercurial)
 
-| Key | Action | Source |
-|-----|--------|--------|
-| `<leader>hs` | Fig status (Telescope) | [C] |
-| `<leader>hx` | Fig xl commit tree (Telescope) | [C] |
-| `<leader>hc` | Files modified in current CL (Telescope) | [C] |
-| `<leader>hh` | Toggle Figtree status panel | [C] |
-
-
-### VCS Hunk Navigation (Git & Fig/Mercurial)
+#### Works in BOTH (Git & Fig/Mercurial)
 
 | Key | Mode | Action | Source |
 |-----|------|--------|--------|
 | `]c` | n | Next hunk / modified block | [K]/[C] |
 | `[c` | n | Previous hunk / modified block | [K]/[C] |
+| `<leader>hp` | n | Preview hunk diff for current line/block (floating popup) | [K]/[C] |
 
-### Gitsigns (Git-specific hunk actions)
+#### Fig / Mercurial Only (Google3 — Signify & Figtree)
+
+| Key | Action | Source |
+|-----|--------|--------|
+| `<leader>hd` | Toggle side-by-side file diffmode (`q` or `<leader>hd` in either window to exit) | [C] |
+| `<leader>hu` | Revert / undo hunk under cursor | [C] |
+| `<leader>hl` | Toggle background line highlighting for modified lines | [C] |
+| `<leader>hh` | Toggle Figtree status panel | [C] |
+| `<leader>hs` | Fig status (Telescope) | [C] |
+| `<leader>hx` | Fig xl commit tree (Telescope) | [C] |
+| `<leader>hc` | Files modified in current CL (Telescope) | [C] |
+
+#### Git Only (Gitsigns & Fugitive)
 
 | Key | Mode | Action | Source |
 |-----|------|--------|--------|
-| `ghs` | n/v | Stage hunk | [K] |
-| `ghr` | n/v | Reset hunk (discard) | [K] |
-| `ghS` | n | Stage entire buffer | [K] |
-| `ghR` | n | Reset entire buffer | [K] |
-| `ghu` | n | Undo stage hunk | [K] |
-| `ghp` | n | Preview hunk inline | [K] |
-| `ghb` | n | Blame current line (popup) | [K] |
-| `ghd` | n | Diff against index | [K] |
-| `ghD` | n | Diff against last commit | [K] |
+| `<leader>hs` | n/v | Stage hunk | [K] |
+| `<leader>hr` | n/v | Reset hunk (discard) | [K] |
+| `<leader>hS` | n | Stage entire buffer | [K] |
+| `<leader>hR` | n | Reset entire buffer | [K] |
+| `<leader>hb` | n | Blame current line (popup) | [K] |
 | `<leader>tb` | n | Toggle inline blame | [K] |
 | `<leader>tD` | n | Toggle show deleted lines | [K] |
 
