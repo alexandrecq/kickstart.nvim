@@ -126,6 +126,10 @@ return {
               end
               if #chars > 0 then
                 table.insert(cmd, 'f:[^/]*' .. table.concat(chars, '[^/]*'))
+                if #chars >= 3 then
+                  local hint = chars[1] .. chars[2] .. chars[3]
+                  table.insert(cmd, 'f:' .. hint)
+                end
               else
                 table.insert(cmd, 'f:' .. t)
               end
