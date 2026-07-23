@@ -3,7 +3,7 @@
 -- General
 local options_noremap = { noremap = true }
 vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = '[Q]uit NVim' })
-vim.keymap.set('n', '<leader>qa', ':qa<CR>', { desc = '[Q]uit [A]ll' })
+-- vim.keymap.set('n', '<leader>qa', ':qa<CR>', { desc = '[Q]uit [A]ll' })
 vim.keymap.set('n', '<leader>w', ':write<CR>', { desc = '[W]rite current buffer' })
 vim.keymap.set('n', '<leader>db', ':bd', { desc = '[D]elete [B]uffer' })
 vim.keymap.set('n', '<leader>ms', ':mksession!<CR> :xa<CR>', { desc = '[M]ake [S]ession' })
