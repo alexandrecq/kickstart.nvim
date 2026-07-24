@@ -357,8 +357,8 @@ return {
       end
 
       -- Configure CiderLSP if available
-      local ciderlsp_bin = vim.env.CIDERLSP_BIN
-      if ciderlsp_bin and vim.fn.executable(ciderlsp_bin) == 1 then
+      local ciderlsp_bin = vim.env.CIDERLSP_BIN or '/google/bin/releases/cider/ciderlsp/ciderlsp'
+      if vim.fn.executable(ciderlsp_bin) == 1 then
         local configs = require('lspconfig.configs')
         if not configs.ciderlsp then
           local ciderlsp_settings = {
@@ -404,7 +404,7 @@ return {
       {
         '<leader>f',
         function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
+          require('conform').format { async = true, lsp_format = 'fallback', timeout_ms = 5000 }
         end,
         mode = '',
         desc = '[F]ormat buffer',
@@ -412,16 +412,36 @@ return {
     },
     opts = {
       notify_on_error = false,
+      default_format_opts = {
+        timeout_ms = 5000,
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         python = function(bufnr)
-          if vim.fn.executable('ruff') == 1 then
+          if vim.fn.executable('google3format') == 1 then
+            return { 'google3format' }
+          elseif vim.fn.executable('ruff') == 1 then
             return { 'ruff_format' }
           end
           return { 'lsp' }
         end,
       },
       formatters = {
+        google3format = {
+          command = 'google3format',
+          args = function(self, ctx)
+            local bufname = vim.api.nvim_buf_get_name(ctx.buf)
+            local resolved = vim.fn.resolve(bufname)
+            local match = resolved:match('(/google3/.+)$')
+            local depot_path = match and ('//depot' .. match) or ('//depot/google3/' .. vim.fn.expand('%:t'))
+            if ctx.range then
+              return { '--depot_path', depot_path, string.format('%d-%d', ctx.range.start[1], ctx.range['end'][1]) }
+            else
+              return { '--depot_path', depot_path, '--whole_file' }
+            end
+          end,
+          stdin = true,
+        },
         ruff_format = {
           -- Must mirror lineLength in the ruff LSP settings above
           prepend_args = { '--line-length', '120' },
