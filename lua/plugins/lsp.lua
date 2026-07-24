@@ -28,6 +28,9 @@ return {
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
+
+      -- CiderLSP AI inline completion (ghost text)
+      { url = 'sso://user/aktau/lsp-inline-complete.nvim' },
     },
     config = function()
       -- Globally wrap the documentHighlight handler to silently ignore any errors
@@ -155,6 +158,13 @@ return {
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
+          end
+
+          if client and client_supports_method(client, "textDocument/inlineCompletion", event.buf) then
+            pcall(function()
+              require('lsp-inline-complete').enable(true, client.id, event.buf)
+              vim.keymap.set('i', '<Tab>', require('lsp-inline-complete').accept_completion, { buffer = event.buf, noremap = true, silent = true })
+            end)
           end
 
           if client and client.name == 'clangd' then
@@ -404,7 +414,12 @@ return {
       notify_on_error = false,
       formatters_by_ft = {
         lua = { 'stylua' },
-        python = { 'ruff_format' },
+        python = function(bufnr)
+          if vim.fn.executable('ruff') == 1 then
+            return { 'ruff_format' }
+          end
+          return { 'lsp' }
+        end,
       },
       formatters = {
         ruff_format = {
