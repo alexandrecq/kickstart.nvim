@@ -422,3 +422,14 @@ Press `<leader>` and pause — which-key will show a popup of available next key
 Also works with `g`, `]`, `[`, `z` etc.
 
 Standard Neovim LSP commands are grouped under **`gr`** (LSP Actions).
+
+```mermaid
+flowchart TD
+  A["Datagen Storage Mode"] --> B{"output_extracted_bundles_to_woodshed?"}
+  B -- "False (Bagz to Placer)" --> C["Woodshed SSTable Storage Bypassed<br/>• NO .gcl edits needed<br/>• NO
+minion_goldens needed<br/>• Placer
+reads sigma_emb/*.txtpb directly"]
+  B -- "True (Direct SSTable)" --> D["Woodshed SSTable Storage Used<br/>• MUST edit waymo-ml-woodshed-sim-
+eval.gcl<br/>• MUST add
+minion_goldens/eb_config/*.txtpb<br/>• all_columns_test verifies schema integrity"]
+```
