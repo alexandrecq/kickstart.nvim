@@ -223,6 +223,7 @@
 | `<leader>hh` | Toggle Figtree status panel | [C] |
 | `<leader>hs` | Fig status (Telescope) | [C] |
 | `<leader>hx` | Fig xl commit tree (Telescope) | [C] |
+| `<leader>hb` | Toggle G4 blame sidebar (`g4 annotate -u -c` for CL numbers and LDAP users) | [C] |
 | `<leader>hc` | Files modified in current CL (Telescope) | [C] |
 
 #### Git Only (Gitsigns & Fugitive)
