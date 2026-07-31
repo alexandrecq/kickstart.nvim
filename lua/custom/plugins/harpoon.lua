@@ -49,7 +49,10 @@ return {
 
       -- Open the quick menu (edit the list)
       vim.keymap.set('n', '<leader>e', function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
+        harpoon.ui:toggle_quick_menu(harpoon:list(), {
+          ui_width_ratio = 0.6,
+          height_in_lines = 18,
+        })
       end, { desc = 'Harpoon toggle menu' })
 
       -- Jump directly to files 1–4
