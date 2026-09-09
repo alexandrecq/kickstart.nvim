@@ -12,6 +12,7 @@ function M.toggle()
     local buf = vim.api.nvim_win_get_buf(win)
     if vim.bo[buf].filetype == 'g4blame' then
       pcall(vim.api.nvim_win_set_option, current_win, 'scrollbind', false)
+      pcall(vim.api.nvim_win_set_option, current_win, 'cursorbind', false)
       pcall(vim.api.nvim_win_close, win, true)
       return
     end
@@ -24,16 +25,13 @@ function M.toggle()
   end
 
   local depot_path = filepath:gsub('.*/google3/', '//depot/google3/')
-  local cmd = string.format('g4 annotate -u -c %s 2>/dev/null', vim.fn.shellescape(depot_path))
+  local cmd = string.format('g4 annotate -q -u -c %s 2>/dev/null', vim.fn.shellescape(depot_path))
   local output = vim.fn.systemlist(cmd)
 
   if vim.v.shell_error ~= 0 or #output == 0 then
     vim.notify('g4-blame: g4 annotate failed for ' .. depot_path, vim.log.levels.ERROR)
     return
   end
-
-  -- Skip header line
-  table.remove(output, 1)
 
   local cl_lines = {}
   for _, line in ipairs(output) do
@@ -46,6 +44,8 @@ function M.toggle()
       table.insert(cl_lines, '                        ')
     end
   end
+
+  local current_cursor = vim.api.nvim_win_get_cursor(current_win)
 
   vim.cmd('leftabove vnew')
   local blame_buf = vim.api.nvim_get_current_buf()
@@ -67,18 +67,24 @@ function M.toggle()
   vim.wo[blame_win].wrap = false
   vim.api.nvim_win_set_width(blame_win, 24)
 
-  -- Synchronized scrolling
+  -- Synchronize cursor position and scrolling
+  pcall(vim.api.nvim_win_set_cursor, blame_win, current_cursor)
   vim.wo[blame_win].scrollbind = true
   vim.wo[current_win].scrollbind = true
+  vim.wo[blame_win].cursorbind = true
+  vim.wo[current_win].cursorbind = true
 
   -- Keymaps inside blame window
   vim.keymap.set('n', 'q', function()
     pcall(vim.api.nvim_win_set_option, current_win, 'scrollbind', false)
+    pcall(vim.api.nvim_win_set_option, current_win, 'cursorbind', false)
     pcall(vim.api.nvim_win_close, blame_win, true)
   end, { buffer = blame_buf, silent = true })
 
-  -- Return focus to main editor window
+  -- Return focus to main editor window and sync binding
   vim.api.nvim_set_current_win(current_win)
+  vim.cmd('syncbind')
+  vim.cmd('redraw')
 end
 
 return {
