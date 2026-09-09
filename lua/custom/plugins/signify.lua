@@ -20,14 +20,23 @@ return {
           for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
             local buf = vim.api.nvim_win_get_buf(win)
             pcall(vim.keymap.del, 'n', 'q', { buffer = buf })
-            if vim.bo[buf].buftype == 'nofile' or vim.bo[buf].bufhidden == 'wipe' then
-              pcall(vim.api.nvim_win_close, win, true)
+          end
+          if vim.t[tab].signify_diff then
+            vim.cmd('tabclose')
+          else
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              if vim.bo[buf].buftype == 'nofile' or vim.bo[buf].bufhidden == 'wipe' then
+                pcall(vim.api.nvim_win_close, win, true)
+              end
             end
           end
         else
           vim.cmd('SignifyDiff')
           vim.schedule(function()
-            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+            local cur_tab = vim.api.nvim_get_current_tabpage()
+            vim.t[cur_tab].signify_diff = true
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(cur_tab)) do
               local buf = vim.api.nvim_win_get_buf(win)
               vim.keymap.set('n', 'q', toggle_signify_diff, { buffer = buf, silent = true })
             end
